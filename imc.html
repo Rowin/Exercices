@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset=utf-8 />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	</head>
+	<body>
+		<div class=container>
+			<form>
+				<div class="form-group row">
+					<label class="col-form-label col-sm-2" for=taille>Taille</label>
+					<div class="input-group col-sm-10">
+						<input class="form-control" type=number name=taille id=taille min=1.00 max=2.50 step=0.01 placeholder=1.70 />
+						<div class="input-group-append">
+							<span class="input-group-text">m</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-form-label col-sm-2" for=poids>Poids</label>
+					<div class="input-group col-sm-10">
+						<input class="form-control" type=number name=poids id=poids min=10 max=300 placeholder=80 />
+						<div class="input-group-append">
+							<span class="input-group-text">kg</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group row justify-content-end">
+					<div class="input-group col-sm-10">
+						<input class="form-control btn btn-primary" type=submit value="Calculer mon IMC" />
+					</div>
+				</div>
+			</form>
+			
+			<div class="alert" id=imc style="display: none"></div>
+			<!-- <div class="imc progress">
+				<div class="progress-bar" style="width: 15%"></div>
+				<div class="progress-bar bg-success" style="width: 85%"></div>
+				<div class="progress-bar bg-warning" style="width: 85%"></div>
+			</div> -->
+			
+		</div>
+		<script src="https://code.jquery.com/jquery-3.5.1.min.js" ></script>
+		<script type=text/javascript>
+			$(document).ready(function() {
+				$('form').submit(function(event) {
+					let taille = $('input#taille').val();
+					let poids = $('input#poids').val();
+					
+					let imc = Math.round(10 * (poids / taille ** 2)) / 10;
+					let message = "";
+					let div_class = ""
+					
+					if (imc < 16.5) {
+						div_class = 'alert-danger';
+						message = "Dénutrition";
+					} else if (imc < 18.5) {
+						div_class = 'alert-warning';
+						message = "Maigreur";
+					} else if (imc < 25) {
+						div_class = 'alert-success';
+						message = "Poids normal";
+					} else if (imc < 30) {
+						div_class = 'alert-warning';
+						message = "Surpoids";
+					} else {
+						div_class = 'alert-danger';
+						message = "Obésité";
+					}
+					
+					$('#imc')
+						.html("Votre IMC est de " + imc + " : " + message)
+						.toggle(true)
+						.removeClass(['alert-danger', 'alert-success', 'alert-warning'])
+						.addClass(div_class);
+					
+					event.preventDefault();
+				});
+			});
+		</script>
+	</body>
+</html>
